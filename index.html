@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Louis Picasso EPK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a white-walled gallery that a Detroit punk got into after hours.
+   Each section is a "room"; works hang in black frames with museum placards; red spray marker and tape break the calm. */
+:root{
+  --wall:#EBEBE7;
+  --wall-2:#F6F6F3;
+  --ink:#121212;
+  --muted:#5E5E59;
+  --rule:#C9C9C2;
+  --spray:#E10600;
+  --tape:rgba(240,228,150,.82);
+  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --marker:"Permanent Marker","Comic Sans MS",cursive;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--wall);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55;
+  background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:4px 4px}
+img{max-width:100%;display:block}
+html,body{overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spray);outline-offset:3px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- floor plan nav ---------- */
+.plan{position:sticky;top:0;z-index:20;background:rgba(235,235,231,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.plan .wrap{display:flex;align-items:center;gap:18px;height:54px}
+.plan .mark{font-family:var(--display);font-size:20px;letter-spacing:.02em;text-decoration:none;white-space:nowrap}
+.plan nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.plan nav::-webkit-scrollbar{display:none}
+.plan nav a{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;
+  padding:6px 10px;border:1px solid transparent;white-space:nowrap;color:var(--muted)}
+.plan nav a .n{color:var(--spray);margin-right:4px}
+.plan nav a:hover{color:var(--ink);border-color:var(--rule)}
+.plan nav a.on{color:var(--ink);border-color:var(--ink);background:var(--wall-2)}
+
+/* ---------- shared pieces ---------- */
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.room{padding:84px 0;border-bottom:1px solid var(--rule);scroll-margin-top:54px}
+.room-head{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.room-head .num{font-family:var(--mono);font-size:13px;color:var(--spray);letter-spacing:.1em}
+.room-head h2{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,76px);line-height:.95;text-transform:uppercase}
+.room-head .scrawl{font-family:var(--marker);color:var(--spray);font-size:22px;transform:rotate(-4deg);display:inline-block}
+
+.frame{position:relative;background:#0d0d0d;padding:10px;box-shadow:0 22px 40px -18px rgba(0,0,0,.45),0 2px 0 rgba(0,0,0,.2);cursor:zoom-in;border:0;display:block;width:100%;text-align:left}
+.frame .mat{display:block;background:#fafaf7;padding:14px}
+.frame img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
+.frame:hover img{filter:contrast(1.05)}
+.frame.land img{aspect-ratio:3/2}
+.frame.wide img{aspect-ratio:16/9}
+.bandpics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:44px 32px}
+.bandpics figure{margin:0;display:grid;gap:12px;grid-column:span 2}
+.bandpics .bp0,.bandpics .bp1{grid-column:span 3}
+.bandpics .frame img{aspect-ratio:1/1;object-position:center top}
+.subhead{display:flex;align-items:center;gap:16px;margin:72px 0 32px}
+.subhead .rule{flex:1;height:1px;background:var(--rule)}
+.yts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 40px}
+.yts .frame{width:100%}
+.frame.port img{aspect-ratio:4/5}
+.tape{position:absolute;width:96px;height:26px;background:var(--tape);box-shadow:0 1px 2px rgba(0,0,0,.12);z-index:2}
+.tape.tl{top:-10px;left:-18px;transform:rotate(-32deg)}
+.tape.br{bottom:-8px;right:-20px;transform:rotate(-28deg)}
+.tape.tr{top:-8px;right:-22px;transform:rotate(30deg)}
+
+.placard{background:var(--wall-2);border:1px solid var(--rule);padding:14px 16px;font-family:var(--mono);font-size:13px;line-height:1.5;max-width:330px}
+.placard .meta{display:block}
+.placard b{display:block;font-family:var(--body);font-size:17px;font-weight:500;margin-bottom:2px}
+.placard i{font-family:var(--body);font-size:16px}
+.placard .meta{color:var(--muted)}
+.placard .views{display:inline-block;margin-top:8px;padding:2px 8px;background:var(--ink);color:var(--wall-2);font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  padding:14px 20px;border:2px solid var(--ink);background:var(--ink);color:var(--wall-2);text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--spray);border-color:var(--spray)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--wall-2);border-color:var(--ink)}
+.todo{display:inline-block;font-family:var(--marker);font-size:15px;color:var(--spray);border:2px dashed var(--spray);padding:4px 10px;transform:rotate(-1.5deg);background:rgba(225,6,0,.04)}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 72px;border-bottom:1px solid var(--rule)}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(76px,15vw,184px);line-height:.82;text-transform:uppercase;letter-spacing:-.01em;position:relative}
+.hero h1 .tag{position:absolute;right:2%;bottom:-.32em;font-family:var(--marker);font-size:clamp(30px,5vw,58px);color:var(--spray);transform:rotate(-8deg);letter-spacing:0;text-transform:lowercase;line-height:1}
+.hero .lede{font-size:clamp(20px,2.2vw,24px);max-width:34ch;margin:44px 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .art{display:grid;gap:18px;justify-items:start}
+.hero .art .frame{transform:rotate(1.2deg)}
+
+.vinyl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-top:64px}
+.vinyl div{padding:20px 18px;border-right:1px solid var(--rule)}
+.vinyl div:last-child{border-right:0}
+.vinyl strong{display:block;font-family:var(--display);font-weight:400;font-size:clamp(30px,3.8vw,54px);line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.vinyl span{display:block;margin-top:10px;line-height:1.4;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+/* ---------- the whitley ---------- */
+.whitley-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.walltext{max-width:58ch}
+.walltext p{margin:0 0 18px}
+.walltext .big{font-size:24px;line-height:1.4}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 22px;font-family:var(--mono);font-size:14px;margin:28px 0;padding:18px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.facts dt{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding-top:2px}
+.facts dd{margin:0}
+.listen{display:grid;gap:14px;margin-top:26px}
+.player{display:flex;gap:16px;align-items:center;background:var(--ink);color:var(--wall-2);padding:16px 18px}
+.pbtn{width:54px;height:54px;border-radius:50%;border:0;background:var(--spray);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
+.pbtn:hover{transform:scale(1.05)}
+.pmeta{flex:1;display:grid;gap:8px;min-width:0}
+.ptitle{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.ptitle b{font-family:var(--body);font-size:17px;text-transform:none;letter-spacing:0;font-weight:500}
+.ptitle span{color:#9a9a94;padding-top:3px}
+.pbar{height:6px;background:#3a3a37;cursor:pointer;position:relative}
+.pbar span{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--spray)}
+.ptime{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:#9a9a94;font-variant-numeric:tabular-nums}
+.clip-slot{border:2px dashed var(--rule);padding:16px 18px;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.clip-slot .dot{width:42px;height:42px;border-radius:50%;border:2px solid var(--rule);display:grid;place-items:center;flex:none}
+
+/* ---------- moving image ---------- */
+.reels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px;max-width:860px}
+.reel{display:grid;gap:18px;text-decoration:none;justify-items:start}
+.reel .frame{max-width:100%}
+.reel .frame{cursor:pointer}
+.reel .play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.reel .play span{width:74px;height:74px;border-radius:50%;background:rgba(18,18,18,.82);display:grid;place-items:center;transition:transform .2s,background .2s}
+.reel:hover .play span{transform:scale(1.08);background:var(--spray)}
+.reel .open{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;text-decoration:underline;text-underline-offset:3px}
+
+.bts{margin-top:56px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:22px;border:2px solid var(--ink);background:var(--wall-2);text-decoration:none;max-width:860px}
+.bts:hover{background:var(--ink);color:var(--wall-2)}
+.bts:hover .eyebrow,.bts:hover .meta{color:#b5b5ae}
+.bts .yt{width:64px;height:46px;border-radius:12px;background:var(--spray);display:grid;place-items:center}
+.bts b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(26px,3.4vw,36px);line-height:1.05;text-transform:uppercase;margin:4px 0}
+.bts .meta{display:block;color:var(--muted);font-size:16px}
+.bts .go{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+@media (max-width:560px){.bts{grid-template-columns:auto 1fr}.bts .go{grid-column:2}}
+
+/* ---------- statement ---------- */
+.statement{display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:start}
+.statement .walltext p:first-child::first-letter{font-family:var(--display);float:left;font-size:88px;line-height:.8;padding:6px 10px 0 0;color:var(--spray)}
+.sheet{background:var(--wall-2);border:1px solid var(--rule);padding:22px}
+.sheet h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500}
+.sheet .facts{margin:0;border:0;padding:0}
+
+/* ---------- booking ---------- */
+.booking{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start}
+.contact-card{border:2px solid var(--ink);padding:24px;background:var(--wall-2)}
+.contact-card .em{font-family:var(--display);font-size:clamp(26px,3.4vw,38px);line-height:1.05;word-break:break-word;margin:10px 0 16px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+form{display:grid;gap:18px}
+label{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:grid;gap:6px}
+input,select,textarea{font:inherit;font-family:var(--body);font-size:17px;padding:11px 12px;border:1px solid var(--ink);background:var(--wall-2);color:var(--ink);border-radius:0;width:100%}
+textarea{min-height:96px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font-family:var(--mono);font-size:13px;padding:8px 12px;border:1px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--wall-2)}
+.out{white-space:pre-wrap;font-family:var(--mono);font-size:13px;background:#121212;color:#EDEDE8;padding:18px;line-height:1.55;min-height:120px}
+.status{font-family:var(--mono);font-size:13px;color:var(--spray);min-height:1.4em}
+
+footer{padding:48px 0 64px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- the gallery (band) ---------- */
+.band{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+.album{border:2px solid var(--ink);background:var(--wall-2);padding:26px;display:grid;gap:14px;position:relative}
+.album .stamp{position:absolute;top:-16px;right:18px;font-family:var(--marker);color:var(--spray);font-size:24px;transform:rotate(6deg);background:var(--wall);padding:0 8px}
+.album h3{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1;text-transform:uppercase}
+.pull{font-family:var(--display);font-size:clamp(28px,4vw,46px);line-height:1.05;text-transform:uppercase;margin:0 0 24px}
+.pull em{font-style:normal;color:var(--spray)}
+
+/* ---------- highlights ---------- */
+.hl{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:0}
+.hl li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:16px;line-height:1.4}
+.hl li:last-child{border-bottom:0}
+.hl li span{font-family:var(--mono);font-size:12px;color:var(--spray);padding-top:3px}
+
+/* ---------- press photos ---------- */
+.press{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;align-items:start}
+.press figure{margin:0;display:grid;gap:14px}
+.slot{border:2px dashed var(--rule);aspect-ratio:3/2;display:grid;place-items:center;text-align:center;padding:20px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:50;display:none;align-items:center;justify-content:center;padding:24px}
+.lb.open{display:flex}
+.lb figure{margin:0;display:grid;gap:14px;max-height:100%;justify-items:center}
+.lb img{max-height:78vh;width:auto;border:10px solid #fafaf7}
+.lb figcaption{color:#EDEDE8;font-family:var(--mono);font-size:13px;text-align:center;max-width:60ch}
+.lb button{position:absolute;top:14px;right:14px;background:transparent;border:1px solid #EDEDE8;color:#EDEDE8;font-family:var(--mono);font-size:13px;padding:8px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:.08em}
+
+/* ---------- responsive ---------- */
+@media (max-width:880px){
+  .hero .wrap,.whitley-grid,.statement,.booking,.band{grid-template-columns:1fr;gap:40px}
+  .press{grid-template-columns:1fr 1fr}
+  .bandpics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bandpics figure,.bandpics .bp0,.bandpics .bp1{grid-column:span 1}
+  .vinyl{grid-template-columns:1fr 1fr}
+  .vinyl div:nth-child(2){border-right:0}
+  .vinyl div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .hero .art{max-width:380px}
+  .room{padding:64px 0}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .plan .mark{font-size:17px}
+  .vinyl{grid-template-columns:1fr}
+  .vinyl div{border-right:0;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .vinyl span{margin-top:0;text-align:right}
+  .vinyl div:last-child{border-bottom:0}
+  .reels{grid-template-columns:1fr;gap:48px;max-width:380px}
+  .press{grid-template-columns:1fr}
+  .yts{grid-template-columns:1fr}
+  .bandpics{grid-template-columns:1fr}
+  .bandpics figure,.bandpics .bp0,.bandpics .bp1{grid-column:auto}
+  .two{grid-template-columns:1fr}
+  .hero h1 .tag{position:static;display:block;margin-top:14px;transform:rotate(-4deg)}
+  .hero .lede{margin-top:28px}
+}
+</style>
+</head>
+<body>
+
+<header class="plan">
+  <div class="wrap">
+    <a class="mark" href="#top">Louis Picasso</a>
+    <nav aria-label="Rooms">
+      <a href="#whitley"><span class="n">01</span>The Whitley</a>
+      <a href="#the-gallery"><span class="n">02</span>The Gallery</a>
+      <a href="#moving-image"><span class="n">03</span>Moving image</a>
+      <a href="#artist"><span class="n">04</span>Artist</a>
+      <a href="#photos"><span class="n">05</span>Photos</a>
+      <a href="#booking"><span class="n">06</span>Booking</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ===== Entrance ===== -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Now showing &middot; Ypsilanti / Detroit, MI &middot; Press kit</p>
+        <h1>Louis<br>Picasso<span class="tag">rap / punk</span></h1>
+        <p class="lede">Melodic, harmonized rap on one release. Raw garage punk on the next. Live with his band, The Gallery, and DJ Fame. New single <em>The Whitley</em> is out now.</p>
+        <div class="ctas">
+          <a class="btn" href="https://open.spotify.com/artist/3toqmoOM7NHWaP4hay1ZGW">&#9654; Listen on Spotify</a>
+          <a class="btn ghost" href="#booking">Book Louis</a>
+        </div>
+      </div>
+      <div class="art">
+        <button class="frame port" type="button" data-full="img/woods.jpg" data-caption="Louis Picasso, portrait in the woods. Photo by the late ShotBySpecs.">
+          <span class="tape tl"></span><span class="tape br"></span>
+          <span class="mat"><img src="img/woods-portrait.jpg" alt="Black-and-white portrait of Louis Picasso in braids, a black hoodie and silver chains, looking back at the camera in bare winter woods" width="1000" height="1250"></span>
+        </button>
+        <div class="placard">
+          <b>Louis Picasso</b>
+          <i>Portrait in the woods</i><br>
+          <span class="meta">Black-and-white photograph.<br>Photo by the late ShotBySpecs.</span>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="vinyl" aria-label="Numbers">
+        <div><strong>3.5K</strong><span>Instagram followers</span></div>
+        <div><strong>2 WKS</strong><span>To sell out his own shows</span></div>
+        <div><strong>3.1K</strong><span>Views, top reel</span></div>
+        <div><strong>11.12.26</strong><span>The Whitley released</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Room 01 ===== -->
+  <section class="room" id="whitley">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 01</span>
+        <h2>The Whitley</h2>
+        <span class="scrawl">out now</span>
+      </div>
+      <div class="whitley-grid">
+        <div style="display:grid;gap:18px;justify-items:start;max-width:420px">
+          <button class="frame" type="button" data-full="img/whitley.jpg" data-caption="The Whitley Hotel, 2026. Anime-style key art for the single The Whitley.">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/whitley.jpg" alt="Anime-style art of a hotel at night in the rain, with a neon sign reading The Whitley Hotel in pink and blue" width="900" height="1597" loading="lazy"></span>
+          </button>
+          <div class="placard">
+            <b>The Whitley Hotel</b>
+            <i>Key art</i>, 2026<br>
+            <span class="meta">Anime style. Neon on wet pavement.</span>
+          </div>
+        </div>
+        <div class="walltext">
+          <p class="big">A rebellious punk rock anthem about forbidden attraction, late-night temptation, and two people giving in to a moment they know they shouldn't.</p>
+          <p>Set against a luxury hotel rendezvous, the song captures the thrill of impulsive decisions, undeniable chemistry, and the dangerous line between a one-night escape and wanting something more.</p>
+          <dl class="facts">
+            <dt>Format</dt><dd>Single</dd>
+            <dt>Released</dt><dd>November 12, 2026</dd>
+            <dt>Genre</dt><dd>Punk rock</dd>
+            <dt>Visuals</dt><dd>Anime-style promo clip, 1.3K views</dd>
+          </dl>
+          <div class="listen">
+            <a class="btn" href="https://open.spotify.com/artist/3toqmoOM7NHWaP4hay1ZGW">&#9654; Stream on Spotify</a>
+            <div class="player" id="player">
+              <button type="button" class="pbtn" id="pbtn" aria-label="Play preview of The Whitley"><svg id="picon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              <div class="pmeta">
+                <div class="ptitle"><b>The Whitley</b><span>40-sec preview</span></div>
+                <div class="pbar" id="pbar" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><span id="pfill"></span></div>
+                <div class="ptime"><span id="pcur">0:00</span><span id="pdur">0:40</span></div>
+              </div>
+              <audio id="audio" src="audio/whitley-preview.mp3" preload="metadata"></audio>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Room 02 ===== -->
+  <section class="room" id="the-gallery">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 02</span>
+        <h2>The Gallery</h2>
+        <span class="scrawl">live band</span>
+      </div>
+      <div class="band">
+        <div class="walltext">
+          <p class="pull">Live instruments. <em>No backing vocals.</em></p>
+          <p>On stage, Louis performs with his band, The Gallery. Live instrumentation puts his voice and the band's musicianship at the center of the show, and they've taken it on the road.</p>
+          <dl class="facts">
+            <dt>Vocals</dt><dd>Louis Picasso</dd>
+            <dt>Band</dt><dd>The Gallery</dd>
+            <dt>DJ</dt><dd>DJ Fame</dd>
+            <dt>Stages</dt><dd>Saint Andrew&rsquo;s Hall, Detroit &middot; House of Blues, Cleveland</dd>
+          </dl>
+          <p>Book Louis solo with DJ Fame, or with the full band.</p>
+        </div>
+        <div class="album">
+          <span class="stamp">live</span>
+          <p class="eyebrow" style="margin:0">Live record &middot; Louis Picasso &amp; The Gallery</p>
+          <h3>Behind the Paintings: The Burning Canvas</h3>
+          <dl class="facts" style="margin:0">
+            <dt>Released</dt><dd>October 18, 2020</dd>
+            <dt>Length</dt><dd>6 songs</dd>
+          </dl>
+          <a class="btn" href="https://open.spotify.com/album/6fyrgX0a5kRNl2Mhb3XcAR" style="justify-self:start">&#9654; Listen on Spotify</a>
+        </div>
+      </div>
+      <div class="subhead"><span class="eyebrow">The band in session</span><span class="rule"></span></div>
+      <div class="bandpics">
+        <figure class="bp0">
+          <button class="frame" type="button" data-full="img/band-booth.jpg" data-caption="The Gallery: In the booth.">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/band-booth.jpg" alt="A vocalist in a cap and GOLD tee pointing out mid-take at a studio mic" width="1000" height="995" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>In the booth</b><span class="meta">The Gallery, in session.</span></figcaption>
+        </figure>
+        <figure class="bp1">
+          <button class="frame" type="button" data-full="img/band-keys.jpg" data-caption="The Gallery: On keys.">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/band-keys.jpg" alt="A keyboard player laughing at a Roland synth under purple light" width="1000" height="995" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>On keys</b><span class="meta">The Gallery, in session.</span></figcaption>
+        </figure>
+        <figure class="bp2">
+          <button class="frame" type="button" data-full="img/band-vocals.jpg" data-caption="The Gallery: Vocals.">
+            <span class="tape br"></span>
+            <span class="mat"><img src="img/band-vocals.jpg" alt="A singer in headphones smiling at a studio mic with a pop filter" width="1000" height="995" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>Vocals</b><span class="meta">The Gallery, in session.</span></figcaption>
+        </figure>
+        <figure class="bp3">
+          <button class="frame" type="button" data-full="img/band-dj.jpg" data-caption="The Gallery: On the decks.">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/band-dj.jpg" alt="A DJ singing into a mic over a Pioneer controller and laptop" width="1000" height="995" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>On the decks</b><span class="meta">The Gallery, in session.</span></figcaption>
+        </figure>
+        <figure class="bp4">
+          <button class="frame" type="button" data-full="img/band-room.jpg" data-caption="The Gallery: Rehearsal room.">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/band-room.jpg" alt="A DJ at a Pioneer controller in a rehearsal room with drums stacked on a shelf" width="1000" height="995" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>Rehearsal room</b><span class="meta">The Gallery, in session.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Room 03 ===== -->
+  <section class="room" id="moving-image">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 03</span>
+        <h2>Moving image</h2>
+        <span class="scrawl">live, videos, studio</span>
+      </div>
+      <div class="subhead" style="margin-top:0"><span class="eyebrow">On Instagram</span><span class="rule"></span></div>
+      <div class="reels">
+        <a class="reel" href="https://www.instagram.com/reel/Dez_5K-xlc3/">
+          <span class="frame">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/studio.jpg" alt="Renes Room studio performance reel cover" width="900" height="1597" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>Renes Room Studio Performance</b>
+            <i>Reel</i>, 2026<br>
+            <span class="meta">Live vocal take in the studio.</span>
+            <span class="views">3.1K views</span>
+          </span>
+          <span class="open">Watch on Instagram &rarr;</span>
+        </a>
+        <a class="reel" href="https://www.instagram.com/reel/De9jjPRBInm/">
+          <span class="frame">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/whitley.jpg" alt="The Whitley promo clip cover" width="900" height="1597" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>The Whitley Promo Clip</b>
+            <i>Reel</i>, 2026<br>
+            <span class="meta">Anime-style trailer for the single.</span>
+            <span class="views">1.3K views</span>
+          </span>
+          <span class="open">Watch on Instagram &rarr;</span>
+        </a>
+      </div>
+      <div class="subhead"><span class="eyebrow">On YouTube</span><span class="rule"></span></div>
+      <div class="yts">
+        <a class="reel" href="https://www.youtube.com/watch?v=wC6YMQ3wUrY">
+          <span class="frame wide">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/yt-standrews.jpg" alt="Louis Picasso on stage at Saint Andrew's Hall with a full band, backing singers and a DJ" width="960" height="540" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>Live at Saint Andrew&rsquo;s Hall</b>
+            <i>Live performance</i>, 2018
+            <span class="meta">The Detroit Art Show, Part 1. Filmed by TongFx.</span>
+          </span>
+          <span class="open">Watch on YouTube &rarr;</span>
+        </a>
+        <a class="reel" href="https://www.youtube.com/watch?v=Kw-49_S8wzo">
+          <span class="frame wide">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/yt-hob.jpg" alt="A House of Blues crew member backstage under purple stage lights" width="960" height="540" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>House of Blues Cleveland</b>
+            <i>Tour film</i>, 2018
+            <span class="meta">Louis Picasso &amp; The Gallery travel to Cleveland to play House of Blues.</span>
+          </span>
+          <span class="open">Watch on YouTube &rarr;</span>
+        </a>
+        <a class="reel" href="https://www.youtube.com/watch?v=PdssG0l_ECk">
+          <span class="frame wide">
+            <span class="tape br"></span>
+            <span class="mat"><img src="img/yt-gold.jpg" alt="Gold-tinted still of an old house and parked cars with the word GOLD over it" width="960" height="540" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>GOLD ft. Willis Writer</b>
+            <i>Music video</i>, 2017
+            <span class="meta">Produced by AP &amp; Joey Sativa. Shot by Cylent Media.</span>
+          </span>
+          <span class="open">Watch on YouTube &rarr;</span>
+        </a>
+        <a class="reel" href="https://www.youtube.com/watch?v=f4489iqy5Zs">
+          <span class="frame wide">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/yt-studio.jpg" alt="Louis Picasso throwing up a peace sign behind a studio mic during the Move On live session with Antonio Cooper" width="960" height="540" loading="lazy"></span>
+            <span class="play" aria-hidden="true"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </span>
+          <span class="placard">
+            <b>Move On (Live) ft. Antonio Cooper</b>
+            <i>Live session</i>
+            <span class="meta">Louis Picasso with Antonio Cooper, recorded live at the mic.</span>
+          </span>
+          <span class="open">Watch on YouTube &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Room 04 ===== -->
+  <section class="room" id="artist">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 04</span>
+        <h2>Artist statement</h2>
+      </div>
+      <div class="statement">
+        <div class="walltext">
+          <p>Louis Picasso is an Ypsilanti native who has earned recognition in Detroit through a sound that refuses to stay in one lane. His first viral single, &ldquo;COOLAX,&rdquo; produced by AP, introduced his music to a growing audience and turned online attention into a real following. When he began organizing his own local shows, tickets sold out within the first two weeks.</p>
+          <p>Picasso took that momentum to the stage with his band, The Gallery, bringing live instrumentation into his performances and taking the show on the road. Performing without backing vocals, he puts his voice and the band&rsquo;s musicianship at the center of the experience.</p>
+          <p>His versatility makes every release unpredictable. Melodic, harmonized rap can give way to raw, gritty garage punk, with each sound revealing another side of his artistry. Picasso follows the feeling of the music wherever it takes him, carrying that same freedom into his live shows.</p>
+          <p>You may never know what he&rsquo;s dropping next, but you can count on a sonic Picasso every time.</p>
+        </div>
+        <aside class="sheet">
+          <h3>Highlights</h3>
+          <ol class="hl">
+            <li><span>01</span><div>&ldquo;COOLAX&rdquo; (prod. AP), his first viral single</div></li>
+            <li><span>02</span><div>Self-booked local shows sold out within two weeks</div></li>
+            <li><span>03</span><div>Played Saint Andrew&rsquo;s Hall (Detroit) and House of Blues (Cleveland)</div></li>
+            <li><span>04</span><div><em>Behind the Paintings: The Burning Canvas</em> (2020), live with The Gallery</div></li>
+            <li><span>05</span><div>&ldquo;The Whitley&rdquo; released November 2026</div></li>
+          </ol>
+          <h3>Fact sheet</h3>
+          <dl class="facts">
+            <dt>Hometown</dt><dd>Ypsilanti, MI</dd>
+            <dt>Scene</dt><dd>Detroit</dd>
+            <dt>Genre</dt><dd>Rap / Punk</dd>
+            <dt>Live</dt><dd>Solo or with The Gallery</dd>
+            <dt>DJ</dt><dd>DJ Fame</dd>
+            <dt>Instagram</dt><dd><a href="https://www.instagram.com/louispicasso/">@louispicasso</a> &middot; 3.5K</dd>
+            <dt>Spotify</dt><dd><a href="https://open.spotify.com/artist/3toqmoOM7NHWaP4hay1ZGW">Louis Picasso</a></dd>
+            <dt>For fans of</dt><dd>JAY-Z, Linkin Park, Kendrick Lamar</dd>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Room 05 ===== -->
+  <section class="room" id="photos">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 05</span>
+        <h2>Press photos</h2>
+        <span class="scrawl">tap to enlarge</span>
+      </div>
+      <div class="press">
+        <figure>
+          <button class="frame land" type="button" data-full="img/smoke.jpg" data-caption="Louis Picasso, profile in a cap. Photo by the late ShotBySpecs.">
+            <span class="tape tl"></span>
+            <span class="mat"><img src="img/smoke.jpg" alt="Black-and-white profile of Louis Picasso in a black cap and hoodie, smoking, with a blurred mural behind him" width="1600" height="1066" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>Profile in a cap</b><span class="meta">Black-and-white photograph.<br>Photo by the late ShotBySpecs.</span></figcaption>
+        </figure>
+        <figure>
+          <button class="frame land" type="button" data-full="img/woods.jpg" data-caption="Louis Picasso, portrait in the woods. Photo by the late ShotBySpecs.">
+            <span class="tape tr"></span>
+            <span class="mat"><img src="img/woods.jpg" alt="Black-and-white portrait of Louis Picasso looking back at the camera in bare winter woods" width="1600" height="1066" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>Portrait in the woods</b><span class="meta">Black-and-white photograph.<br>Photo by the late ShotBySpecs.</span></figcaption>
+        </figure>
+        <figure>
+          <button class="frame land" type="button" data-full="img/purple.jpg" data-caption="Louis Picasso, hand to face, in a black and purple windbreaker and gold watch. Photo by ShootWithKese.">
+            <span class="tape br"></span>
+            <span class="mat"><img src="img/purple-land.jpg" alt="Color portrait of Louis Picasso in a black cap, black and purple windbreaker and gold watch, hand over half his face, against a cloudy sky" width="1320" height="880" loading="lazy"></span>
+          </button>
+          <figcaption class="placard"><b>Hand to face</b><span class="meta">Color photograph.<br>Photo by ShootWithKese.</span></figcaption>
+        </figure>
+      </div>
+      <p class="eyebrow" style="margin-top:36px">Hi-res files and more photos: Hiiigherminds@gmail.com</p>
+    </div>
+  </section>
+
+  <!-- ===== Room 06 ===== -->
+  <section class="room" id="booking">
+    <div class="wrap">
+      <div class="room-head">
+        <span class="num">Room 06</span>
+        <h2>Booking</h2>
+        <span class="scrawl">shows, features, press</span>
+      </div>
+      <div class="booking">
+        <div class="contact-card">
+          <p class="eyebrow">Booking &amp; press contact</p>
+          <p class="em" id="emailText">Email coming soon</p>
+          <div class="row">
+            <button class="btn" type="button" id="copyEmail">Copy email</button>
+            <a class="btn ghost" href="https://www.instagram.com/louispicasso/">DM on Instagram</a>
+          </div>
+          <p class="status" id="emailStatus" role="status"></p>
+        </div>
+        <form id="inquiry" novalidate>
+          <div>
+            <p class="eyebrow" style="margin:0 0 8px">Build a booking request</p>
+            <div class="chips" role="group" aria-label="Request type">
+              <button type="button" aria-pressed="true" data-type="Live show with The Gallery">Show with The Gallery</button>
+              <button type="button" aria-pressed="false" data-type="Solo live show with DJ Fame">Solo show + DJ Fame</button>
+              <button type="button" aria-pressed="false" data-type="Feature verse">Feature verse</button>
+              <button type="button" aria-pressed="false" data-type="Interview / press">Interview / press</button>
+            </div>
+          </div>
+          <div class="two">
+            <label for="f-name">Your name<input id="f-name" autocomplete="name" placeholder="Jordan Lee"></label>
+            <label for="f-org">Venue or outlet<input id="f-org" placeholder="The Shelter"></label>
+          </div>
+          <div class="two">
+            <label for="f-date">Date<input id="f-date" type="date"></label>
+            <label for="f-city">City<input id="f-city" placeholder="Detroit, MI"></label>
+          </div>
+          <label for="f-notes">Details<textarea id="f-notes" placeholder="Set length, budget, lineup, deadline"></textarea></label>
+          <div class="out" id="out" aria-live="polite"></div>
+          <div class="row">
+            <button class="btn" type="submit">Copy request</button>
+            <a class="btn ghost" id="mailBtn" href="#booking">Open in email</a>
+          </div>
+          <p class="status" id="formStatus" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Louis Picasso &middot; Ypsilanti / Detroit</span>
+    <span>Exhibition ongoing</span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged artwork">
+  <button type="button" id="lbClose">Close</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<script>
+// Fill these in when Louis sends them.
+const BOOKING_EMAIL = "Hiiigherminds@gmail.com";
+const ARTIST = "Louis Picasso";
+
+// ---- email card ----
+const emailText = document.getElementById("emailText");
+const emailStatus = document.getElementById("emailStatus");
+if (BOOKING_EMAIL) emailText.textContent = BOOKING_EMAIL;
+document.getElementById("copyEmail").addEventListener("click", async () => {
+  if (!BOOKING_EMAIL) { emailStatus.textContent = "No email yet. DM on Instagram for now."; return; }
+  try { await navigator.clipboard.writeText(BOOKING_EMAIL); emailStatus.textContent = "Copied."; }
+  catch { emailStatus.textContent = "Couldn't copy. Select the address above instead."; }
+});
+
+// ---- inquiry builder ----
+let type = "Live show with The Gallery";
+const chips = document.querySelectorAll(".chips button");
+chips.forEach(b => b.addEventListener("click", () => {
+  chips.forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+  type = b.dataset.type; render();
+}));
+const $ = id => document.getElementById(id);
+const out = $("out"), mailBtn = $("mailBtn");
+function fmtDate(v){ if(!v) return "TBD"; const d=new Date(v+"T12:00:00"); return d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); }
+function message(){
+  const name=$("f-name").value.trim(), org=$("f-org").value.trim(), city=$("f-city").value.trim(), notes=$("f-notes").value.trim();
+  return {
+    subject: `${type} request: ${ARTIST}${org ? " x " + org : ""}`,
+    body: `Hi ${ARTIST} team,\n\n${name || "[Your name]"}${org ? " from " + org : ""} here. We'd like to book Louis for a ${type.charAt(0).toLowerCase()+type.slice(1)}.\n\nDate: ${fmtDate($("f-date").value)}\nCity: ${city || "TBD"}\n${notes ? "\nDetails: " + notes + "\n" : ""}\nLooking forward to hearing back.`
+  };
+}
+function render(){
+  const m = message();
+  out.textContent = `Subject: ${m.subject}\n\n${m.body}`;
+  mailBtn.href = BOOKING_EMAIL ? `mailto:${BOOKING_EMAIL}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}` : "#booking";
+}
+["f-name","f-org","f-date","f-city","f-notes"].forEach(id => $(id).addEventListener("input", render));
+mailBtn.addEventListener("click", e => { if (!BOOKING_EMAIL){ e.preventDefault(); $("formStatus").textContent = "Email isn't set up yet. Copy the request and DM it on Instagram."; }});
+$("inquiry").addEventListener("submit", async e => {
+  e.preventDefault();
+  try { await navigator.clipboard.writeText(out.textContent); $("formStatus").textContent = "Request copied. Paste it into an email or DM."; }
+  catch { $("formStatus").textContent = "Couldn't copy. Select the text in the black box instead."; }
+});
+render();
+
+// ---- preview player ----
+const audio=$("audio"), pbtn=$("pbtn"), picon=$("picon"), pfill=$("pfill"), pbar=$("pbar");
+const PLAY='<path d="M8 5v14l11-7z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
+const t2s=t=>{t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+":"+String(t%60).padStart(2,"0");};
+pbtn.addEventListener("click", async ()=>{
+  if(audio.paused){ try{ await audio.play(); }catch{ pbtn.setAttribute("aria-label","Playback blocked. Tap Stream on Spotify instead."); } }
+  else audio.pause();
+});
+audio.addEventListener("play",()=>{picon.innerHTML=PAUSE;pbtn.setAttribute("aria-label","Pause preview");});
+audio.addEventListener("pause",()=>{picon.innerHTML=PLAY;pbtn.setAttribute("aria-label","Play preview of The Whitley");});
+audio.addEventListener("ended",()=>{audio.currentTime=0;});
+audio.addEventListener("loadedmetadata",()=>{$("pdur").textContent=t2s(audio.duration);});
+audio.addEventListener("timeupdate",()=>{const d=audio.duration||40;pfill.style.width=(audio.currentTime/d*100)+"%";$("pcur").textContent=t2s(audio.currentTime);pbar.setAttribute("aria-valuenow",Math.floor(audio.currentTime));});
+pbar.addEventListener("click",e=>{const r=pbar.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*(audio.duration||40);});
+pbar.addEventListener("keydown",e=>{if(e.key==="ArrowRight")audio.currentTime+=5;if(e.key==="ArrowLeft")audio.currentTime-=5;});
+
+// ---- lightbox ----
+const lb=$("lb"), lbImg=$("lbImg"), lbCap=$("lbCap");
+let lastFocus=null;
+document.querySelectorAll("button.frame").forEach(f => f.addEventListener("click", () => {
+  lastFocus=f; lbImg.src=f.dataset.full; lbImg.alt=f.querySelector("img").alt; lbCap.textContent=f.dataset.caption;
+  lb.classList.add("open"); $("lbClose").focus();
+}));
+function closeLb(){ lb.classList.remove("open"); if(lastFocus) lastFocus.focus(); }
+$("lbClose").addEventListener("click", closeLb);
+lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && lb.classList.contains("open")) closeLb(); });
+
+// ---- floor plan highlight ----
+const links=[...document.querySelectorAll(".plan nav a")];
+if ("IntersectionObserver" in window){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ links.forEach(a=>a.classList.toggle("on", a.getAttribute("href")==="#"+en.target.id)); }});
+  },{rootMargin:"-45% 0px -50% 0px"});
+  document.querySelectorAll("section.room").forEach(s=>io.observe(s));
+}
+</script>
+</body>
+</html>
